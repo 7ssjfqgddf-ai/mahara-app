@@ -1,97 +1,173 @@
-/* 전체 배경 및 폰트 */
+/* 기본 */
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   margin: 0;
-  background: #f3f4f6;
+  background: radial-gradient(circle at top, #f9fafb 0%, #edf2f7 100%);
   color: #111827;
+  min-height: 100vh;
 }
 
 /* 상단바 */
 .topbar {
-  background: #111827;
+  background: linear-gradient(90deg, #111827 0%, #1f2937 100%);
   color: #fff;
-  padding: 18px 20px 12px;
+  padding: 22px 20px 16px;
   text-align: center;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.25);
 }
 .topbar h1 {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.55rem;
+  letter-spacing: -0.02em;
 }
 .subtitle {
-  margin-top: 6px;
+  margin-top: 8px;
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 /* 레이아웃 */
 .container {
-  max-width: 1100px;
-  margin: 20px auto;
+  max-width: 1150px;
+  margin: 22px auto 0;
   display: flex;
-  gap: 20px;
-  padding: 0 15px;
+  gap: 22px;
+  padding: 0 18px 40px;
   box-sizing: border-box;
 }
 
-/* 템플릿 카드 목록 */
-.template-list {
-  flex: 2;
+/* 왼쪽 큰 영역 */
+.template-area {
+  flex: 2.2;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
-/* 카드 디자인 */
+/* 필터 바 */
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(209, 213, 219, 0.7);
+  border-radius: 12px;
+  padding: 6px 6px 4px;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.02);
+  backdrop-filter: blur(3px);
+}
+.filter-btn {
+  background: transparent;
+  border: none;
+  border-radius: 9999px;
+  padding: 5px 14px 5px;
+  font-size: 0.74rem;
+  cursor: pointer;
+  color: #374151;
+  transition: all 0.12s ease-out;
+}
+.filter-btn:hover {
+  background: rgba(37, 99, 235, 0.08);
+}
+.filter-btn.active {
+  background: #2563eb;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+
+/* 목록(세로형) */
+.template-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* 카드 */
 .template-card {
   background: #fff;
   border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 14px 16px 12px;
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+  border-radius: 14px;
+  padding: 14px 16px 14px;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.05);
+  transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
+  position: relative;
+  overflow: hidden;
 }
+.template-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 4px;
+  width: 90px;
+  background: linear-gradient(90deg, #2563eb 0%, rgba(37, 99, 235, 0) 100%);
+}
+.template-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+}
+
+/* 카드 헤더 */
 .template-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 10px;
 }
 .template-card h3 {
   margin: 0;
-  font-size: 1.05rem;
+  font-size: 1.02rem;
+  color: #111827;
+  font-weight: 600;
 }
+
+/* 배지 */
 .badge {
-  background: #eff6ff;
+  background: rgba(37, 99, 235, 0.08);
   color: #1d4ed8;
-  font-size: 0.7rem;
-  padding: 3px 8px;
+  font-size: 0.68rem;
+  padding: 4px 10px 3px;
   border-radius: 9999px;
+  border: 1px solid rgba(37, 99, 235, 0.25);
+  white-space: nowrap;
 }
+
+/* 텍스트 */
 .target {
-  margin: 10px 0 4px;
-  font-size: 0.85rem;
+  margin: 10px 0 3px;
+  font-size: 0.78rem;
   color: #4b5563;
 }
 .desc {
-  margin: 2px 0 10px;
-  font-size: 0.85rem;
+  margin: 0 0 12px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: #1f2937;
 }
+
+/* 버튼들 */
 .actions {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
 }
-
-/* 버튼 스타일 */
 button {
   border: none;
-  border-radius: 8px;
-  font-size: 0.8rem;
-  padding: 6px 10px;
+  border-radius: 9px;
+  font-size: 0.75rem;
+  padding: 7px 13px 7px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.12s ease-out;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 button.primary {
   background: #2563eb;
-  color: white;
+  color: #fff;
+  font-weight: 500;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
 }
 button.primary:hover {
   background: #1d4ed8;
@@ -104,38 +180,44 @@ button.secondary:hover {
   background: #d1d5db;
 }
 
-/* 교수자용 안내 패널 */
+/* 오른쪽 안내 패널 */
 .guide-panel {
-  flex: 1;
+  flex: 1.1;
   background: #fff;
   border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 14px 16px;
+  border-radius: 14px;
+  padding: 14px 16px 16px;
   height: fit-content;
   position: sticky;
-  top: 12px;
+  top: 18px;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04);
+  border-left: 4px solid rgba(37, 99, 235, 0.35);
 }
 .guide-panel h2 {
   margin-top: 0;
   font-size: 1rem;
   margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 #guide-content {
-  font-size: 0.85rem;
-  line-height: 1.5;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: #374151;
   white-space: pre-line;
 }
 
-/* 하단 안내문 */
+/* footer */
 .footer {
   text-align: center;
   font-size: 0.7rem;
   color: #6b7280;
-  padding: 12px 0 20px;
+  padding: 16px 0 20px;
 }
 
-/* 반응형 (모바일) */
-@media (max-width: 900px) {
+/* 반응형 */
+@media (max-width: 930px) {
   .container {
     flex-direction: column;
   }
@@ -143,3 +225,32 @@ button.secondary:hover {
     position: static;
   }
 }
+@media (max-width: 520px) {
+  .actions {
+    flex-direction: column;
+  }
+  button {
+    justify-content: center;
+  }
+}
+
+/* 제목 + 아이콘 정렬 */
+.title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 작은 아이콘 알약 모양 */
+.icon-pill {
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  background: rgba(37, 99, 235, 0.08);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  line-height: 1;
+}
+s
