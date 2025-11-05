@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="ko" data-theme="light">
 <head>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="theme-color" content="#2563eb" />
+  <!-- iOS 설치 대응(선택): -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
   <meta charset="UTF-8" />
   <title>Mahara 템플릿 선택</title>
   <link rel="stylesheet" href="style.css" />
@@ -173,3 +178,9 @@
   </script>
 </body>
 </html>
+
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("./sw.js").catch(console.error);
+  }
+</script>
