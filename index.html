@@ -1,11 +1,22 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <title>Mahara 템플릿 선택</title>
   <link rel="stylesheet" href="style.css" />
+  <!-- 데이터 먼저 로드 -->
+  <script src="data.js"></script>
 </head>
 <body>
+  <!-- 🔔 토스트 -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- 🌙 다크모드 스위치 -->
+  <button id="theme-toggle" class="action-pill" type="button" title="다크모드 전환">🌙</button>
+
+  <!-- ⬆️ 맨 위로 버튼 -->
+  <button id="backToTop" class="back-to-top" type="button" aria-label="맨 위로">↑</button>
+
   <header class="topbar">
     <h1>Mahara 템플릿 선택</h1>
     <p class="subtitle">필요한 템플릿을 선택하고 Mahara에서 이어서 작성하세요.</p>
@@ -22,7 +33,7 @@
         <button class="filter-btn" data-filter="졸업">졸업</button>
       </div>
 
-      <!-- 템플릿 카드들이 여기 들어감 -->
+      <!-- 템플릿 목록 -->
       <section class="template-list" id="template-list"></section>
     </section>
 
@@ -37,103 +48,42 @@
   </footer>
 
   <script>
-    // ---------------------------
-    // 📦 데이터 (템플릿 목록 + 안내)
-    // ---------------------------
-    const templates = [
-      {
-        id: "mahara-01",
-        name: "기초 평가 포트폴리오",
-        target: "의예과 1~2학년 공통",
-        desc: "기초 학습 경험과 간단한 성찰을 기록하는 기본 템플릿입니다.",
-        maharaUrl: "https://ehffag.cpserver.com/mahara/view/view.php?t=45ea8299d7f240becbf5",
-        badge: "기초",
-        category: "기초"
-      },
-      {
-        id: "mahara-02",
-        name: "임상 평가 포트폴리오",
-        target: "의학과 1~2학년 실습",
-        desc: "실습일지, 사례 성찰, 증빙을 정리하는 템플릿입니다.",
-        maharaUrl: "https://example.com/mahara/clinical",
-        badge: "임상",
-        category: "임상"
-      },
-      {
-        id: "mahara-03",
-        name: "임상실습 평가 포트폴리오",
-        target: "의학과 3~4학년 실습",
-        desc: "임상실습 중 발생하는 기록과 성찰을 체계적으로 정리하는 템플릿입니다.",
-        maharaUrl: "https://example.com/mahara/clinical-practice",
-        badge: "임상실습",
-        category: "임상실습"
-      },
-      {
-        id: "mahara-04",
-        name: "졸업 포트폴리오 · 통합형",
-        target: "졸업 예정자 / 통합 제출",
-        desc: "여러 학년의 성취, 성적, 증빙을 한 번에 모아서 제출하는 구조입니다.",
-        maharaUrl: "https://example.com/mahara/graduation",
-        badge: "졸업",
-        category: "졸업"
-      }
-    ];
-
-    // 카테고리 → 아이콘 매핑
-    const categoryIcons = {
-      "기초": "📘",
-      "임상": "🩺",
-      "임상실습": "🧪",
-      "졸업": "🎓"
-    };
-
-    const teacherGuides = {
-      "mahara-01": `
-[교수자용 안내]
-대상: 의예과 1~2학년
-- 포트폴리오 작성 경험을 먼저 쌓게 하는 단계입니다.
-- 사례는 3~5개로 제한해 부담을 줄여주세요.
-- 제출은 Mahara에서만 받도록 안내하세요.
-`,
-      "mahara-02": `
-[교수자용 안내]
-대상: 의학과 1~2학년 실습
-- 실습일지와 사례 기록을 분리해서 작성하도록 안내하세요.
-- 부서마다 증빙 양식이 다를 수 있으니 공통 필수 증빙만 먼저 제시하세요.
-- 민감정보 포함 여부를 확인해 Mahara 권한을 제한하도록 안내하세요.
-`,
-      "mahara-03": `
-[교수자용 안내]
-대상: 의학과 3~4학년 임상실습
-- 실습기관별 요구 서식이 다를 수 있으니 '공통 기록'과 '기관별 추가 기록'을 구분해서 작성하게 하세요.
-- 실습 하루/회차 단위로 기록하도록 하여 누락을 줄입니다.
-- 지도교수 피드백 기록용 블록을 추가로 활용하게 하세요.
-`,
-      "mahara-04": `
-[교수자용 안내]
-대상: 졸업 예정자 또는 통합 포트폴리오 제출자
-- 연도/학기 구역을 먼저 안내해 자료를 구조화하도록 합니다.
-- 평가도구 미확정 시 '임시 기준'을 먼저 안내하고, 확정 후 Mahara 공지로만 갱신합니다.
-- 용량·파일형식 제한을 미리 안내하면 제출 실패를 줄일 수 있습니다.
-`
-    };
+    // ============= 안전장치: data.js 확인 =============
+    if (typeof templates === "undefined" || typeof teacherGuides === "undefined") {
+      document.getElementById("template-list").innerHTML =
+        '<p style="color:red;font-weight:600">data.js를 불러오지 못했습니다. 파일 이름/위치를 확인하세요.</p>';
+      throw new Error("data.js not loaded");
+    }
 
     // ---------------------------
-    // 🧩 화면 구성
+    // 🧩 화면 로직
     // ---------------------------
     const listBox = document.getElementById("template-list");
     const guideContent = document.getElementById("guide-content");
     const filterBar = document.getElementById("filter-bar");
+    const toast = document.getElementById("toast");
+    const themeToggle = document.getElementById("theme-toggle");
+    const backToTop = document.getElementById("backToTop");
 
     let currentFilter = "all";
 
+    // 🔔 토스트
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2000);
+    }
+
+    // 외부 이동
+    function openExternal(url) {
+      showToast("템플릿 다운로드를 위한 그룹가입 구글폼으로 이동합니다");
+      window.open(url, "_blank");
+    }
+
+    // 렌더
     function renderTemplates() {
       listBox.innerHTML = "";
-
-      const filtered = templates.filter(t => {
-        if (currentFilter === "all") return true;
-        return t.category === currentFilter;
-      });
+      const filtered = templates.filter(t => currentFilter === "all" ? true : t.category === currentFilter);
 
       if (filtered.length === 0) {
         listBox.innerHTML = `<p style="color:#6b7280; font-size:0.8rem;">해당 조건의 템플릿이 없습니다.</p>`;
@@ -143,9 +93,7 @@
       filtered.forEach(t => {
         const card = document.createElement("article");
         card.className = "template-card";
-
-        // 아이콘 선택 (카테고리 없으면 기본 아이콘)
-        const icon = categoryIcons[t.category] || "📁";
+        const icon = (typeof categoryIcons !== "undefined" && categoryIcons[t.category]) ? categoryIcons[t.category] : "📁";
 
         card.innerHTML = `
           <div class="template-header">
@@ -158,43 +106,70 @@
           <p class="target"><strong>대상:</strong> ${t.target}</p>
           <p class="desc">${t.desc}</p>
           <div class="actions">
-            <button class="primary" onclick="window.open('${t.maharaUrl}', '_blank')">
-              Mahara에서 열기
-            </button>
-            <button class="secondary" onclick="showTeacherGuide('${t.id}')">
-              교수자용 안내 보기
-            </button>
+            <button class="primary" onclick="openExternal('${t.maharaUrl}')">Mahara에서 열기</button>
+            <button class="secondary" onclick="showTeacherGuide('${t.id}')">교수자용 안내 보기</button>
           </div>
         `;
         listBox.appendChild(card);
       });
     }
 
+    // 안내 표시
     function showTeacherGuide(id) {
       const guideText = teacherGuides[id];
       guideContent.innerHTML = guideText || "이 템플릿에는 교수자용 안내가 아직 없습니다.";
     }
 
-    // 필터 클릭
+    // 필터
     filterBar.addEventListener("click", (e) => {
       const btn = e.target.closest("button");
       if (!btn) return;
       currentFilter = btn.dataset.filter;
-
       document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
-
       renderTemplates();
     });
 
-    // 첫 렌더
-    renderTemplates();
-    if (templates.length > 0) {
-      const firstId = templates[0].id;
-      if (teacherGuides[firstId]) {
-        guideContent.innerHTML = teacherGuides[firstId];
-      }
+    // 🌙 다크모드: 저장/적용
+    const root = document.documentElement;
+    function applyTheme(theme) {
+      root.setAttribute("data-theme", theme);
+      // 버튼 아이콘 업데이트
+      themeToggle.textContent = theme === "dark" ? "☀️" : "🌙";
+      localStorage.setItem("theme", theme);
     }
+    // 초깃값: localStorage → 시스템
+    (function initTheme(){
+      const saved = localStorage.getItem("theme");
+      if (saved === "light" || saved === "dark") {
+        applyTheme(saved);
+      } else {
+        const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        applyTheme(prefersDark ? "dark" : "light");
+      }
+    })();
+    // 토글
+    themeToggle.addEventListener("click", () => {
+      const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      applyTheme(next);
+    });
+
+    // ⬆️ 맨 위로 버튼
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        backToTop.classList.add("show");
+      } else {
+        backToTop.classList.remove("show");
+      }
+    });
+    backToTop.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    // 초기 렌더 + 기본 안내
+    renderTemplates();
+    const first = templates[0];
+    if (first && teacherGuides[first.id]) guideContent.innerHTML = teacherGuides[first.id];
   </script>
 </body>
 </html>

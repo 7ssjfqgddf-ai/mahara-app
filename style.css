@@ -1,4 +1,3 @@
-/* 기본 */
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   margin: 0;
@@ -7,7 +6,6 @@ body {
   min-height: 100vh;
 }
 
-/* 상단바 */
 .topbar {
   background: linear-gradient(90deg, #111827 0%, #1f2937 100%);
   color: #fff;
@@ -26,7 +24,6 @@ body {
   color: rgba(255, 255, 255, 0.7);
 }
 
-/* 레이아웃 */
 .container {
   max-width: 1150px;
   margin: 22px auto 0;
@@ -36,7 +33,6 @@ body {
   box-sizing: border-box;
 }
 
-/* 왼쪽 큰 영역 */
 .template-area {
   flex: 2.2;
   display: flex;
@@ -44,7 +40,7 @@ body {
   gap: 14px;
 }
 
-/* 필터 바 */
+/* 필터바 */
 .filter-bar {
   display: flex;
   gap: 8px;
@@ -76,7 +72,7 @@ body {
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
 }
 
-/* 목록(세로형) */
+/* 리스트 */
 .template-list {
   display: flex;
   flex-direction: column;
@@ -108,7 +104,6 @@ body {
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
 }
 
-/* 카드 헤더 */
 .template-header {
   display: flex;
   justify-content: space-between;
@@ -121,8 +116,6 @@ body {
   color: #111827;
   font-weight: 600;
 }
-
-/* 배지 */
 .badge {
   background: rgba(37, 99, 235, 0.08);
   color: #1d4ed8;
@@ -131,6 +124,24 @@ body {
   border-radius: 9999px;
   border: 1px solid rgba(37, 99, 235, 0.25);
   white-space: nowrap;
+}
+
+/* 아이콘 추가 */
+.title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.icon-pill {
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  background: rgba(37, 99, 235, 0.08);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  line-height: 1;
 }
 
 /* 텍스트 */
@@ -146,7 +157,7 @@ body {
   color: #1f2937;
 }
 
-/* 버튼들 */
+/* 버튼 */
 .actions {
   display: flex;
   gap: 8px;
@@ -180,7 +191,7 @@ button.secondary:hover {
   background: #d1d5db;
 }
 
-/* 오른쪽 안내 패널 */
+/* 교수자용 안내 */
 .guide-panel {
   flex: 1.1;
   background: #fff;
@@ -197,9 +208,6 @@ button.secondary:hover {
   margin-top: 0;
   font-size: 1rem;
   margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
 }
 #guide-content {
   font-size: 0.78rem;
@@ -234,23 +242,158 @@ button.secondary:hover {
   }
 }
 
-/* 제목 + 아이콘 정렬 */
-.title-wrap {
-  display: flex;
-  align-items: center;
-  gap: 6px;
+/* 🔔 상단 토스트 */
+.toast {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translate(-50%, -20px);
+  background: #111827;
+  color: #fff;
+  padding: 10px 14px;
+  font-size: 0.82rem;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .18s ease, transform .18s ease;
+  z-index: 1000;
+}
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
 }
 
-/* 작은 아이콘 알약 모양 */
-.icon-pill {
-  width: 28px;
-  height: 28px;
-  border-radius: 9999px;
-  background: rgba(37, 99, 235, 0.08);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.95rem;
-  line-height: 1;
+/* 🌙 다크모드 오버라이드 (data-theme="dark") */
+html[data-theme="dark"] body {
+  background: radial-gradient(circle at top, #0f172a 0%, #0b1220 100%);
+  color: #e5e7eb;
 }
-s
+html[data-theme="dark"] .topbar {
+  background: linear-gradient(90deg, #0b1220 0%, #111827 100%);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+html[data-theme="dark"] .subtitle { color: rgba(255,255,255,0.7); }
+
+html[data-theme="dark"] .filter-bar {
+  background: rgba(17, 24, 39, 0.7);
+  border-color: rgba(55, 65, 81, 0.8);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+html[data-theme="dark"] .filter-btn { color: #d1d5db; }
+html[data-theme="dark"] .filter-btn:hover { background: rgba(59,130,246,0.15); }
+
+html[data-theme="dark"] .template-card {
+  background: #0b1220;
+  border-color: #1f2937;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+html[data-theme="dark"] .template-card::before {
+  background: linear-gradient(90deg, #3b82f6 0%, rgba(59,130,246,0) 100%);
+}
+html[data-theme="dark"] .badge {
+  background: rgba(59,130,246,0.12);
+  color: #93c5fd;
+  border-color: rgba(59,130,246,0.35);
+}
+html[data-theme="dark"] .target { color: #9ca3af; }
+html[data-theme="dark"] .desc { color: #e5e7eb; }
+
+html[data-theme="dark"] .guide-panel {
+  background: #0b1220;
+  border-color: #1f2937;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  border-left-color: rgba(59,130,246,0.4);
+}
+html[data-theme="dark"] #guide-content { color: #d1d5db; }
+
+html[data-theme="dark"] button.secondary {
+  background: #1f2937;
+  color: #e5e7eb;
+}
+html[data-theme="dark"] button.secondary:hover {
+  background: #374151;
+}
+
+/* 🔔 토스트 */
+.toast {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translate(-50%, -20px);
+  background: #111827;
+  color: #fff;
+  padding: 10px 14px;
+  font-size: 0.82rem;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .18s ease, transform .18s ease;
+  z-index: 1000;
+}
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* 🌙 다크/라이트 토글 버튼: 우측하단 배치 (back-to-top 위에 살짝 띄움) */
+.action-pill{
+  position: fixed;
+  bottom: 72px;   /* back-to-top(40px)과 간격 */
+  right: 18px;
+  z-index: 1100;
+  background: rgba(255,255,255,0.85);
+  border: 1px solid rgba(17,24,39,0.15);
+  border-radius: 9999px;
+  padding: 10px 12px;
+  font-size: 0.9rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  backdrop-filter: blur(4px);
+}
+html[data-theme="dark"] .action-pill{
+  background: rgba(17,24,39,0.85);
+  color: #e5e7eb;
+  border-color: rgba(255,255,255,0.15);
+}
+@media (max-width: 520px){
+  .action-pill{ bottom: 78px; right: 14px; }
+}
+
+/* 다크모드에서 카드 제목/텍스트 가독성 보정 */
+html[data-theme="dark"] .template-card h3{ color: #e5e7eb; }
+html[data-theme="dark"] .target{ color: #cbd5e1; }
+html[data-theme="dark"] .desc{ color: #e5e7eb; }
+html[data-theme="dark"] .icon-pill{
+  background: rgba(59,130,246,0.18);
+}
+
+/* ⬆️ 맨 위로 버튼 */
+.back-to-top {
+  position: fixed;
+  bottom: 18px;
+  right: 18px;
+  z-index: 1100;
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(37,99,235,0.35);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .2s ease, transform .2s ease, background .2s ease;
+  pointer-events: none;
+}
+.back-to-top.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.back-to-top:hover {
+  background: #1d4ed8;
+}
